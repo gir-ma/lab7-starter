@@ -23,8 +23,10 @@ function init() {
  */
 function getRecipesFromStorage() {
   // A9. Complete the functionality as described in this function header.
-  const recipesJSON = localStorage.getItem('recipes');
-  return recipesJSON ? JSON.parse(recipesJSON) : [];
+  //const recipesJSON = localStorage.getItem('recipes');
+  //return recipesJSON ? JSON.parse(recipesJSON) : [];
+  return JSON.parse(localStorage.getItem('recipes') || '[]');
+
 }
 
 /**
@@ -76,15 +78,18 @@ function initFormHandler() {
 	  event.preventDefault(); // Prevent the default form submission
   
 	  // B4. Create a new FormData object from the <form> element reference above
+	  
 	  const formData = new FormData(form);
   
 	  // B5. Create an empty object (we'll refer to this object as recipeObject to
 	  // make this easier to read), and then extract the keys and corresponding
 	  // values from the FormData object and insert them into recipeObject
 	  const recipeObject = {};
-	  for (const [key, value] of formData.entries()) {
+	  
+	  formData.forEach((value, key)=>{
 		recipeObject[key] = value;
-	  }
+	});
+
   
 	  // B6. Create a new <recipe-card> element
 	  const recipeCard = document.createElement('recipe-card');
@@ -103,11 +108,11 @@ function initFormHandler() {
 	  saveRecipesToStorage(recipes);
   
 	  // Clear the form after submission
-	  form.reset();
+	 // form.reset();
 	});
   
 	// B10. Get a reference to the "Clear Local Storage" button
-	const clearStorageButton = document.querySelector('#clear-storage');
+	const clearStorageButton = document.querySelector('.danger');
   
 	// B11. Add a click event listener to clear local storage button
 	clearStorageButton.addEventListener('click', () => {
